@@ -1,6 +1,7 @@
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { useBoardsStore } from "../store/boards";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const style = {
     position: 'absolute',
@@ -27,14 +28,17 @@ export function Menu() {
         const field = new FormData(event.currentTarget)
         const board = field.get('board') as string
 
-        createBoard({ name: board, id: crypto.randomUUID() })
+        createBoard({ name: board, id: crypto.randomUUID(), lists: [] })
 
         setOpen(false)
     }
 
     return (
         <div>
-            <Button sx={{ bgcolor: '#80CBC4', color: '#3D3D3D', fontWeight: 'semibold' }} variant="contained" onClick={handleOpen}>Create board</Button>
+            <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                <Button sx={{ bgcolor: '#80CBC4', color: '#3D3D3D', fontWeight: 'semibold' }} variant="contained" onClick={handleOpen}>Create board</Button>
+                <NavLink to="/">My boards</NavLink>
+            </nav>
             <Modal
                 open={open}
                 onClose={handleClose}

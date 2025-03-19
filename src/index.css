@@ -31,3 +31,10 @@
   margin: 48px 0;
   flex-wrap: wrap;
 }
+
+.lists-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
