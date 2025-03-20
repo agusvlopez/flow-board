@@ -9,7 +9,7 @@ interface State {
     editBoard: (board: Board) => void
 
     lists: List[],
-    addList: (boardId: Board["id"], list: List) => void
+    addList: (list: List) => void
     deleteList: (id: List["id"]) => void
     editList: (list: List) => void
 
@@ -59,12 +59,11 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
             set({ boards: filteredBoards })
         },
 
-        addList: (boardId: Board["id"], list: List) => {
+        addList: (list: List) => {
             const { boards } = get()
             const newBoards = structuredClone(boards)
 
-            const boardIndex = newBoards.findIndex(q => q.id === boardId) //encontramos el indice de la pregunta
-            //agrego el id a lists en Board
+            const boardIndex = newBoards.findIndex(q => q.id === list.boardId)
             newBoards[boardIndex].lists = [...(newBoards[boardIndex].lists || []), list.id]
 
             const { lists } = get()
@@ -102,8 +101,7 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
             const { lists } = get()
             const newLists = structuredClone(lists)
 
-            const listIndex = newLists.findIndex(l => l.id === card.listId) //encontramos el indice de la pregunta
-            //agrego el id a lists en Board
+            const listIndex = newLists.findIndex(l => l.id === card.listId)
             newLists[listIndex].cards = [...(newLists[listIndex].cards || []), card.id]
 
             const { cards } = get()

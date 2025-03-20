@@ -37,4 +37,5 @@
   gap: 16px;
   overflow-x: auto;
   white-space: nowrap;
+  height: 70vh;
 }

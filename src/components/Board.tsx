@@ -8,9 +8,6 @@ interface Props {
 
 export function Board({ board }: Props) {
 
-    return (
-        <>
-            <BaseCard title={board.name} />
-        </>
-    )
+    return <BaseCard title={board.name} />
+
 }

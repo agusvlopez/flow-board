@@ -1,15 +1,14 @@
-//Estructura normalizada
-
 export type Board = {
     id: string
     name: string
-    lists?: string[] //ids de las listas
+    lists?: string[]
 }
 
 export type List = {
     id: string
     name: string
-    cards?: string[] //ids de las cards
+    boardId: string
+    cards?: string[]
 }
 
 export type Card = {
@@ -17,5 +16,5 @@ export type Card = {
     name: string,
     description?: string
     dueDate?: string
-    listId: string //id conectado a list
+    listId: string
 }
