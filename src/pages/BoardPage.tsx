@@ -1,13 +1,15 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom"
-import { Button, Card, List, ListItem, ListItemIcon, ListItemText, TextField } from "@mui/material"
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { Board } from "../types";
+import { Button, Card, List, ListItem, TextField } from "@mui/material"
+import { Board, Card as CardType, List as ListType } from "../types";
 import { BaseModal } from "../components/BaseModal";
 import { useBoardActions } from "../hooks/useBoardActions";
 import { useBoardCRUD } from "../hooks/useBoardCRUD";
 import { handleAddEntity, handleEditEntity } from "../utils/boardForms";
 import { useBoardData } from "../hooks/useBoardData";
+import { ActionableLabel } from "../components/ActionableLabel";
+import { useCallback } from "react";
+import { ActionsMenu } from "../components/ActionsMenu";
+import { BaseCard } from "../components/BaseCard";
 
 export function BoardPage() {
     const { id } = useParams() // Obtener el ID de la URL
@@ -18,6 +20,7 @@ export function BoardPage() {
         error,
         board,
         boardLists,
+        getCardsForList
     } = useBoardData(id as Board["id"]);
 
     const {
@@ -49,7 +52,6 @@ export function BoardPage() {
         editList,
         deleteList,
 
-        cards,
         addCard,
         editCard,
         deleteCard
@@ -60,10 +62,26 @@ export function BoardPage() {
         navigate(-1)
         deleteBoard(boardId)
     }
+    const handleEditList = useCallback((listId: ListType["id"]) => {
+        openInputEditList(listId);
+    }, [openInputEditList]);
+
+    const handleDeleteList = useCallback((listId: ListType["id"]) => {
+        deleteList(listId);
+    }, [deleteList]);
+
+    const handleEditCard = useCallback((cardId: CardType["id"]) => {
+        openInputEditCard(cardId);
+    }, [openInputEditCard]);
+
+    const handleDeleteCard = useCallback((cardId: CardType["id"]) => {
+        deleteCard(cardId);
+    }, [deleteCard]);
 
     if (loading) return <div>Loading board...</div>
     if (error) return <div>Error: {error as string}</div>//todo: check this
     if (!board) return <div>Board not found</div>
+
     return (
         <>
             {isOpenEditBoardModal &&
@@ -95,68 +113,75 @@ export function BoardPage() {
             {/* LISTS */}
             <section className="lists-container">
                 {boardLists?.map(list => (
-                    <Card sx={{ width: 360, margin: '32px 0', height: 'fit-content', flexShrink: 0 }}>
+                    <Card key={list.id} sx={{ width: 360, margin: '32px 0', padding: '12px', height: 'fit-content', flexShrink: 0 }}>
                         <List>
                             <ListItem key={list.id}>
-                                {editListInput === list.id ?
-                                    <form onSubmit={(event) => handleEditEntity(event, list.id, editList, closeInputEditList, "list-edit")}>
-                                        <TextField defaultValue={list.name} name="list-edit" id="list-edit" variant="standard" />
-                                        <Button type="submit">Edit list</Button>
-                                    </form>
-                                    :
-                                    <ListItemText sx={{ color: 'green' }}>
-                                        Lista: {list.name}
-                                    </ListItemText>
-                                }
-
-                                <ListItemIcon style={{ cursor: 'pointer' }} onClick={() => openInputEditList(list.id)}>
-                                    <EditOutlinedIcon />
-                                </ListItemIcon>
-                                <ListItemIcon style={{ cursor: 'pointer' }} onClick={() => deleteList(list.id)}>
-                                    <DeleteOutlineOutlinedIcon />
-                                </ListItemIcon>
+                                <ActionableLabel
+                                    editMode={editListInput === list.id}
+                                    handleOnSubmit={(event) => handleEditEntity(event, list.id, editList, closeInputEditList, "list-edit")}
+                                    defaultValue={list.name}
+                                    labelName="list-edit"
+                                    labelButton="Edit List"
+                                    name={list.name}
+                                    handleEdit={() => {
+                                        handleEditList(list.id)
+                                    }}
+                                />
+                                <ActionsMenu
+                                    elementId={list.id}
+                                    editAction={() => {
+                                        handleEditList(list.id)
+                                    }}
+                                    deleteAction={() => {
+                                        handleDeleteList(list.id)
+                                    }}
+                                />
                             </ListItem>
-
-                            {cards
-                                .filter((card) => list?.cards?.includes(card.id))
-                                .map((card) => (
-                                    <List key={card.id}>
-                                        <ListItem key={list.id}>
-                                            {editCardInput === card.id ?
-                                                <form onSubmit={(event) => handleEditEntity(event, card.id, editCard, closeInputEditCard, "card-edit", { listId: list.id })}>
-                                                    <TextField defaultValue={card.name} name="card-edit" id="card" variant="standard" />
-                                                    <Button type="submit">Edit card</Button>
-                                                </form>
-                                                :
-                                                <ListItemText>
-                                                    Card: {card.name}
-                                                </ListItemText>
-                                            }
-
-                                            <ListItemIcon style={{ cursor: 'pointer' }} onClick={() => openInputEditCard(card.id)}>
-                                                <EditOutlinedIcon />
-                                            </ListItemIcon>
-                                            <ListItemIcon style={{ cursor: 'pointer' }} onClick={() => deleteCard(card.id)}>
-                                                <DeleteOutlineOutlinedIcon />
-                                            </ListItemIcon>
+                        </List>
+                        <div className="cards-container">
+                            {getCardsForList(list.id).map((card) => (
+                                <BaseCard>
+                                    <List>
+                                        <ListItem key={list.id} className="actionable-label--container">
+                                            <ActionableLabel
+                                                editMode={editCardInput === card.id}
+                                                handleOnSubmit={(event) => handleEditEntity(event, card.id, editCard, closeInputEditCard, "card-edit", { listId: list.id })}
+                                                defaultValue={card.name}
+                                                labelName="card-edit"
+                                                labelButton="Edit Card"
+                                                name={card.name}
+                                                handleEdit={() => {
+                                                    handleEditCard(card.id)
+                                                }}
+                                            />
+                                            <ActionsMenu
+                                                elementId={card.id}
+                                                editAction={() => {
+                                                    handleEditCard(card.id)
+                                                }}
+                                                deleteAction={() => {
+                                                    handleDeleteCard(card.id)
+                                                }}
+                                            />
                                         </ListItem>
                                     </List>
-                                ))}
+                                </BaseCard>
+                            ))}
+                        </div>
 
-                            <Button onClick={() => openInputAddCard(list.id)}>Add a card</Button>
-                            {inputCard === list.id &&
-                                <Card sx={{ width: 320, margin: '24px auto', padding: 2, bgcolor: '#1E1E1E' }}>
-                                    <button onClick={closeInputAddCard}>X</button>
-                                    <form onSubmit={(event) =>
-                                        handleAddEntity(event, addCard, closeInputAddCard, "card-new", { listId: list.id })
-                                    }>
+                        <Button onClick={() => openInputAddCard(list.id)}>Add a card</Button>
+                        {inputCard === list.id &&
+                            <Card sx={{ width: 320, margin: '24px auto', padding: 2, bgcolor: '#1E1E1E' }}>
+                                <button onClick={closeInputAddCard}>X</button>
+                                <form onSubmit={(event) =>
+                                    handleAddEntity(event, addCard, closeInputAddCard, "card-new", { listId: list.id })
+                                }>
 
-                                        <TextField name="card-new" id="standard-basic" label="Card name" variant="standard" />
-                                        <Button type="submit">Add card</Button>
-                                    </form>
-                                </Card>
-                            }
-                        </List>
+                                    <TextField name="card-new" id="standard-basic" label="Card name" variant="standard" />
+                                    <Button type="submit">Add card</Button>
+                                </form>
+                            </Card>
+                        }
                     </Card>
                 ))}
             </section>

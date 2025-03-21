@@ -39,3 +39,31 @@
   white-space: nowrap;
   height: 70vh;
 }
+
+.actionable-label--container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.actionable-label {
+  flex: 1;
+}
+
+.base-card {
+  margin: auto;
+  width: 100%;
+
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.board-card {
+  width: 200px;
+  height: 90px;
+  padding: 12px;
+
+}

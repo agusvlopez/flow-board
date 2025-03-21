@@ -1,17 +1,16 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card } from "@mui/material";
+import { ReactNode } from "react";
 
 interface Props {
-    title: string
+    children: ReactNode
+    classStyle?: string
+    handleOnClick?: () => void
 }
 
-export function BaseCard({ title }: Props) {
+export function BaseCard({ children, classStyle, handleOnClick }: Props) {
     return (
-        <Card sx={{ width: 275 }}>
-            <CardContent>
-                <Typography variant="h4" component="h3" gutterBottom>
-                    {title}
-                </Typography>
-            </CardContent>
+        <Card className={`base-card ${classStyle}`} onClick={handleOnClick}>
+            {children}
         </Card>
     )
 }
