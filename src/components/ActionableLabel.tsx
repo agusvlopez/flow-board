@@ -1,5 +1,5 @@
 import { Button, TextField, Typography } from "@mui/material";
-import { useEffect, useRef } from "react";
+import CheckIcon from '@mui/icons-material/Check';
 
 interface Props {
     editMode: boolean,
@@ -11,27 +11,27 @@ interface Props {
     handleEdit?: () => void
 }
 
-export function ActionableLabel({ editMode, handleOnSubmit, defaultValue, labelName, labelButton, name, handleEdit }: Props) {
-    const inputRef = useRef<HTMLInputElement>(null)
-
-    useEffect(() => {
-        if (editMode && inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, [editMode])
+export function ActionableLabel({ editMode, handleOnSubmit, defaultValue, labelName, name, handleEdit }: Props) {
 
     return (
         <div className="actionable-label">
             {editMode ?
-                <form onSubmit={handleOnSubmit}>
+                <form
+                    onSubmit={handleOnSubmit}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                >
                     <TextField
                         defaultValue={defaultValue}
                         name={labelName}
                         id={labelName}
                         variant="standard"
-                        inputRef={inputRef}
+                        autoFocus
                     />
-                    <Button type="submit"><span style={{ visibility: 'hidden' }}>{labelButton}</span></Button>
+                    <Button
+                        sx={{ width: 'fit-content' }}
+                        type="submit"
+                        aria-label="Confirm"
+                    ><CheckIcon /></Button>
                 </form>
                 :
                 <Typography onDoubleClick={handleEdit}>

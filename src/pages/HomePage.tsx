@@ -1,10 +1,10 @@
-import { NavLink } from "react-router-dom";
-import { Menu } from "../components/Menu";
-import { useBoardsStore } from "../store/boards";
-import { Board } from "../components/Board";
-import { BaseCard } from "../components/BaseCard";
-import { useState } from "react";
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { NavLink } from "react-router-dom"
+import { useBoardsStore } from "../store/boards"
+import { Board } from "../components/Board"
+import { BaseCard } from "../components/BaseCard"
+import { Box, Button, Modal, TextField, Typography } from "@mui/material"
+import { handleAddEntity } from "../utils/boardForms"
+import { useBoardActions } from "../hooks/useBoardActions"
 
 
 const style = {
@@ -20,31 +20,17 @@ const style = {
 };
 
 export function HomePage() {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
     const boards = useBoardsStore(state => state.boards)
 
     const createBoard = useBoardsStore(state => state.createBoard)
-
-    const handleCreateBoard = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-
-        const field = new FormData(event.currentTarget)
-        const board = field.get('board') as string
-
-        createBoard({ name: board, id: crypto.randomUUID(), lists: [] })
-
-        setOpen(false)
-    }
-
+    const { isOpenBoardModal, openBoardModal, closeBoardModal } = useBoardActions()
 
     return (
         <>
             <Modal
-                open={open}
-                onClose={handleClose}
+                open={isOpenBoardModal}
+                onClose={closeBoardModal}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -52,24 +38,30 @@ export function HomePage() {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Create a new board
                     </Typography>
-                    <form action="" onSubmit={handleCreateBoard}>
-                        <TextField name="board" id="standard-basic" label="Standard" variant="standard" />
+                    <form onSubmit={(event) =>
+                        handleAddEntity(event, createBoard, closeBoardModal, "board-new"
+                        )}>
+                        <TextField name="board-new" id="board-new" label="Standard" variant="standard" autoFocus />
                         <Button type="submit">Create</Button>
                     </form>
                 </Box>
             </Modal>
 
             <h1>Flow board</h1>
-            <Menu />
+
             <div className='boards-container'>
-                <span>
-                    <BaseCard classStyle="board-card" handleOnClick={handleOpen}>
-                        Add new Board
+                <span style={{ cursor: 'pointer' }}>
+                    <BaseCard variant="newBoard" classStyle="board-card" handleOnClick={openBoardModal}>
+                        <Typography style={{ textAlign: 'left', fontWeight: 'bold' }}>Add new board +</Typography>
                     </BaseCard>
                 </span>
                 {boards.map((b) => {
                     return (
-                        <NavLink to={`/board/${b.id}`} style={{ textDecoration: 'none' }}>
+                        <NavLink
+                            to={`/board/${b.id}`}
+                            key={b.id}
+                            style={{ textDecoration: 'none' }}
+                        >
                             <Board board={b} />
                         </NavLink>
                     )

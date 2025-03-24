@@ -11,7 +11,7 @@ export function Board({ board }: Props) {
 
     return (
         <>
-            <BaseCard classStyle="board-card">
+            <BaseCard classStyle="board-card" variant="board">
                 <Typography style={{ textAlign: 'left', fontWeight: 'bold' }}>{board.name}</Typography>
             </BaseCard>
         </>

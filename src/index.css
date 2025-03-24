@@ -15,14 +15,24 @@
   --primary-color: #80CBC4;
   --light-primary-color: #B4EBE6;
   --white-color: #FBF8EF;
+  --grey-dark-color: #1A1A1A;
   --yellow-color: #FFB433;
+  color: #585858;
 }
 
-#root {
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+} */
+
+.sidebar {
+  width: 250px;
+  background-color: var(--grey-dark-color);
+  color: var(--white-color);
+  padding: 20px;
+  box-shadow: "2px 0 5px rgba(0,0,0,0.2)";
 }
 
 .boards-container {
@@ -34,10 +44,11 @@
 
 .lists-container {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   overflow-x: auto;
-  white-space: nowrap;
-  height: 70vh;
+  /* margin-top: 12px; */
+  max-width: 80vw;
+  margin: 32px auto;
 }
 
 .actionable-label--container {
@@ -52,18 +63,26 @@
 .base-card {
   margin: auto;
   width: 100%;
-
 }
 
 .cards-container {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-height: 500px;
+  /* overflow-y: scroll; */
 }
 
+
 .board-card {
-  width: 200px;
+  width: 220px;
   height: 90px;
   padding: 12px;
+}
 
+.board-actions--container {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }

@@ -13,29 +13,49 @@ const style = {
 };
 
 interface Props {
-    handleEdit: (event: React.FormEvent<HTMLFormElement>) => void
-    openModal: boolean
+    variant: "edit" | "delete"
+    handleEdit?: (event: React.FormEvent<HTMLFormElement>) => void
+    handleDelete?: () => void
+    isOpenModal: boolean
     handleCloseModal: () => void
     defaultValue?: string
 }
 
-export function BaseModal({ handleEdit, openModal, handleCloseModal, defaultValue }: Props) {
+export function BaseModal({ variant, handleEdit, handleDelete, isOpenModal, handleCloseModal, defaultValue }: Props) {
 
     return (
         <Modal
-            open={openModal}
+            open={isOpenModal}
             onClose={handleCloseModal}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Edit board
+                    {variant === "edit" && "Edit board"}
+                    {variant === "edit" && "Delete board"}
                 </Typography>
-                <form action="" onSubmit={handleEdit}>
-                    <TextField defaultValue={defaultValue} name="board" id="standard-basic" label="Standard" variant="standard" />
-                    <Button type="submit">Edit</Button>
-                </form>
+                {variant === "edit" &&
+                    <form action="" onSubmit={handleEdit}>
+                        <TextField defaultValue={defaultValue} name="board" id="standard-basic" label="Standard" variant="standard" autoFocus />
+                        <Button type="submit">
+                            Edit
+                        </Button>
+                    </form>
+                }
+                {variant === "delete" &&
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                        <Typography>Are you sure you want to delete?</Typography>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                onClick={handleDelete}>
+                                Delete
+                            </Button>
+                        </div>
+                    </div>
+                }
             </Box>
         </Modal>
     )

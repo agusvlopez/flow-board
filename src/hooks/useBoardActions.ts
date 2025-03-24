@@ -3,7 +3,9 @@ import { List as ListType, Card as CardType } from "../types"
 
 export function useBoardActions() {
     //STATES
-    //EDIT BOARD
+    //BOARD
+    const [isOpenBoardModal, setIsOpenBoardModal] = useState(false);
+    const [isOpenDeleteBoardModal, setIsOpenDeleteBoardModal] = useState(false);
     const [isOpenEditBoardModal, setIsOpenEditBoardModal] = useState(false)
     //LIST
     const [isInputList, setIsInputList] = useState(false)
@@ -14,6 +16,10 @@ export function useBoardActions() {
 
     //FUNCTIONS
     //BOARD
+    const openBoardModal = () => setIsOpenBoardModal(true);
+    const closeBoardModal = () => setIsOpenBoardModal(false);
+    const openDeleteBoardModal = () => setIsOpenDeleteBoardModal(true)
+    const closeDeleteBoardModal = () => setIsOpenDeleteBoardModal(false)
     const openEditBoardModal = () => setIsOpenEditBoardModal(true)
     const closeEditBoardModal = () => setIsOpenEditBoardModal(false)
 
@@ -30,9 +36,15 @@ export function useBoardActions() {
     const closeInputEditCard = () => setEditCardInput("")
 
     return {
+        isOpenBoardModal,
+        openBoardModal,
+        closeBoardModal,
         isOpenEditBoardModal,
         openEditBoardModal,
         closeEditBoardModal,
+        isOpenDeleteBoardModal,
+        openDeleteBoardModal,
+        closeDeleteBoardModal,
 
         isInputList,
         openInputAddList,
