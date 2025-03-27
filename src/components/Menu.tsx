@@ -3,7 +3,6 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Avatar } from "@mui/material";
 
 export function Menu() {
-    console.log("render ");
 
     return (
         <div>

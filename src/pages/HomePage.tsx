@@ -6,7 +6,6 @@ import { Box, Button, Modal, TextField, Typography } from "@mui/material"
 import { handleAddEntity } from "../utils/boardForms"
 import { useBoardActions } from "../hooks/useBoardActions"
 
-
 const style = {
     position: 'absolute',
     top: '50%',
@@ -28,6 +27,7 @@ export function HomePage() {
 
     return (
         <>
+            {/* //TODO: USE BASE MODAL COMPONENT */}
             <Modal
                 open={isOpenBoardModal}
                 onClose={closeBoardModal}
@@ -41,7 +41,7 @@ export function HomePage() {
                     <form onSubmit={(event) =>
                         handleAddEntity(event, createBoard, closeBoardModal, "board-new"
                         )}>
-                        <TextField name="board-new" id="board-new" label="Standard" variant="standard" autoFocus />
+                        <TextField name="board-new" id="board-new" label="Name" variant="standard" autoFocus />
                         <Button type="submit">Create</Button>
                     </form>
                 </Box>

@@ -37,7 +37,7 @@ export function BaseModal({ variant, handleEdit, handleDelete, isOpenModal, hand
                 </Typography>
                 {variant === "edit" &&
                     <form action="" onSubmit={handleEdit}>
-                        <TextField defaultValue={defaultValue} name="board" id="standard-basic" label="Standard" variant="standard" autoFocus />
+                        <TextField defaultValue={defaultValue} name="board" id="standard-basic" label="Edit" variant="standard" autoFocus />
                         <Button type="submit">
                             Edit
                         </Button>

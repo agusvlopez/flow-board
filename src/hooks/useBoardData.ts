@@ -6,9 +6,13 @@ export function useBoardData(boardId: Board["id"]) {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string>()
     const [boardData, setBoardData] = useState<Board>()
-    const [boardLists, setBoardLists] = useState<List[]>()
 
     const { boards, lists, cards } = useBoardCRUD()
+
+    const getListsForBoard = (boardId: Board["id"]) => {
+        if (!lists) return []
+        return lists.filter(list => boards.find(b => b.id === boardId)?.lists?.includes(list.id))
+    }
 
     const getCardsForList = (listId: List["id"]) => {
         if (!cards) return []
@@ -16,7 +20,7 @@ export function useBoardData(boardId: Board["id"]) {
     }
 
     useEffect(() => {
-        if (!boards || !lists) {
+        if (!boards) {
             setLoading(true)
             return
         }
@@ -30,15 +34,14 @@ export function useBoardData(boardId: Board["id"]) {
         }
 
         setBoardData(foundBoard);
-        setBoardLists(lists.filter(l => foundBoard.lists?.includes(l.id)))
         setLoading(false)
-    }, [boardId, boards, lists])
+    }, [boardId, boards])
 
     return {
         loading,
         error,
         board: boardData,
-        boardLists,
+        getListsForBoard,
         getCardsForList
     };
 }

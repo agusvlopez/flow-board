@@ -30,7 +30,6 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
         createBoard: (board: Board) => {
             const { boards } = get()
             const newBoards = structuredClone(boards)
-            console.log("board", board);
 
             set({ boards: [...newBoards, board] })
         },
