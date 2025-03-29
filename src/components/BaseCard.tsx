@@ -15,15 +15,16 @@ const variantStyles: Record<CardVariant, object> = {
     board: { bgcolor: "#FFB433", color: "#121212" },
     newBoard: { bgcolor: "#121212" },
     list: {
-        width: 360,
-        padding: '12px',
-        flexShrink: 0,
-        overflow: 'hidden',
-        height: 'fit-content',
-        maxHeight: '90%',
-        display: 'flex',
-        flexDirection: 'column',
-        margin: 0
+        // width: 360,
+        // padding: '12px',
+        // flexShrink: 0,
+
+        // height: 'fit-content',
+        // maxHeight: '100%',
+        // display: 'flex',
+        // flexDirection: 'column',
+        // margin: 0,
+
     },
     newList: { bgcolor: "#585858", width: 360, margin: '0', padding: '12px', height: 'fit-content', flexShrink: 0 },
     cardItem: { width: 320, padding: 1, bgcolor: '#1A1A1A' }

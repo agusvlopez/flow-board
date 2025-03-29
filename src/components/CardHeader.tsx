@@ -9,10 +9,10 @@ import { useBoardActions } from "../hooks/useBoardActions";
 interface Props {
     variant: "list" | "card"
     item: ListType | CardType
-    listId?: string
 }
 
-export function CardHeader({ variant, item, listId }: Props) {
+
+export function CardHeader({ variant, item }: Props) {
 
     const {
         editListInput,
@@ -34,7 +34,7 @@ export function CardHeader({ variant, item, listId }: Props) {
     } = useBoardCRUD()
 
 
-    if (variant === "list") return (
+    if (variant === "list" && "boardId" in item) return (
         <List>
             <ListItem key={item.id}>
                 <ActionableLabel
@@ -44,12 +44,13 @@ export function CardHeader({ variant, item, listId }: Props) {
                         item.id,
                         editList,
                         closeInputEditList,
-                        "list-edit"
+                        "list-edit",
+                        { boardId: item?.boardId }
                     )}
-                    defaultValue={item.name}
+                    defaultValue={item.name ?? ""}
                     labelName="list-edit"
                     labelButton="Edit List"
-                    name={item.name}
+                    name={item.name ?? ""}
                     handleEdit={() => {
                         openInputEditList(item.id);
                     }}
@@ -67,7 +68,7 @@ export function CardHeader({ variant, item, listId }: Props) {
         </List>
     )
 
-    if (variant === "card") return (
+    if (variant === "card" && "listId" in item) return (
         <List>
             <ListItem key={item.id} className="actionable-label--container">
                 <ActionableLabel
@@ -78,12 +79,12 @@ export function CardHeader({ variant, item, listId }: Props) {
                         editCard,
                         closeInputEditCard,
                         "card-edit",
-                        { listId: listId })
-                    }
-                    defaultValue={item.name}
+                        { listId: item?.listId }
+                    )}
+                    defaultValue={item.name ?? ""}
                     labelName="card-edit"
                     labelButton="Edit Card"
-                    name={item.name}
+                    name={item.name ?? ""}
                     handleEdit={() => {
                         openInputEditCard(item.id);
                     }}

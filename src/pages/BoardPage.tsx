@@ -1,23 +1,36 @@
 import { useParams } from "react-router-dom"
-import { CardActions, CardContent } from "@mui/material"
-import { Board } from "../types"
+import { Board, Card as CardType } from "../types"
 import { useBoardData } from "../hooks/useBoardData"
-import { BaseCard } from "../components/BaseCard"
-import { CardHeader } from "../components/CardHeader"
-import { NewCardInput } from "../components/NewCardInput"
 import { NewListInput } from "../components/NewListInput"
 import { BoardHeader } from "../components/BoardHeader"
+import { CustomList } from "../components/CustomList"
+import { DndContext, DragEndEvent } from "@dnd-kit/core"
+import { useBoardCRUD } from "../hooks/useBoardCRUD"
 
 export function BoardPage() {
     const { id } = useParams()
+
+    const { editCard } = useBoardCRUD()
 
     const {
         loading,
         error,
         board,
         getListsForBoard,
-        getCardsForList
     } = useBoardData(id as Board["id"])
+
+    const lists = getListsForBoard(board?.id as Board["id"])
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event
+
+        if (!over) return
+
+        const cardId = active.id as CardType["id"]
+        const newStatus = over.id as CardType["listId"]
+
+        editCard({ id: cardId, listId: newStatus })
+    }
 
     if (loading) return <div>Loading board...</div>
     if (error) return <div>Error: {error as string}</div>//todo: check this
@@ -27,62 +40,21 @@ export function BoardPage() {
         <>
             <BoardHeader board={board} />
             {/* LISTS */}
-            <section className="lists-container" style={{ height: '75vh' }}>
-                {getListsForBoard(board.id).map((list) => (
-                    <BaseCard
-                        key={list.id}
-                        variant="list"
-                    >
-                        <CardContent sx={{
-                            margin: 0,
-                            padding: 0,
-                            paddingRight: 2,
-                            maxHeight: '80%',
-                            overflowY: 'auto',
-                            width: 340,
-                            flexGrow: 1,
-                        }}>
 
-                            <CardHeader
-                                variant="list"
-                                item={list}
-                            />
-                            <CardContent sx={{ margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                {getCardsForList(list.id).map((card) => (
-                                    <BaseCard
-                                        variant="cardItem"
-                                        classStyle="card-item"
-                                        key={card.id}
-                                    >
-                                        <CardHeader
-                                            variant="card"
-                                            item={card}
-                                            listId={list.id}
-                                        />
-                                    </BaseCard>
-                                ))}
-                            </CardContent>
-                        </CardContent>
+            <section className="lists-container">
+                <DndContext onDragEnd={handleDragEnd}>
+                    {lists.map((list) => (
+                        <CustomList key={list.id} list={list} />
+                    ))}
 
-                        <CardActions
-                            sx={{
-                                flexShrink: 0,
-                                marginTop: 'auto',
-                                padding: '8px',
-                            }}
-                        >
-                            <NewCardInput
-                                item={list}
-                            />
-                        </CardActions>
-                    </BaseCard>
-                ))}
-                <div>
-                    <NewListInput
-                        item={board}
-                    />
-                </div>
+                    <div>
+                        <NewListInput
+                            item={board}
+                        />
+                    </div>
+                </DndContext>
             </section>
+
         </>
     )
 }

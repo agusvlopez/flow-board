@@ -60,16 +60,16 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
         },
 
         addList: (list: List) => {
-            const { boards } = get()
+            const { boards, lists } = get()
             const newBoards = structuredClone(boards)
+            const newLists = structuredClone(lists)
 
             const boardIndex = newBoards.findIndex(q => q.id === list.boardId)
             newBoards[boardIndex].lists = [...(newBoards[boardIndex].lists || []), list.id]
 
-            const { lists } = get()
-            const newLists = structuredClone(lists)
+            const newList = { ...list, cards: list.cards ?? [] }
 
-            set({ lists: [...newLists, list], boards: newBoards })
+            set({ lists: [...newLists, newList], boards: newBoards })
         },
 
         editList: ({ id, name }: List) => {
@@ -110,7 +110,7 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
             set({ cards: [...newCards, card], lists: newLists })
         },
 
-        editCard: ({ id, name }: Card) => {
+        editCard: ({ id, name, listId }: Card) => {
             const { cards } = get()
             const newCards = structuredClone(cards)
 
@@ -118,7 +118,8 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
             const cardInfo = newCards[cardIndex]
             newCards[cardIndex] = {
                 ...cardInfo,
-                name
+                ...(name !== undefined && { name }),
+                ...(listId !== undefined && { listId })
             }
 
             set({ cards: newCards })

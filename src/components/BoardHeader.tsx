@@ -35,7 +35,13 @@ export function BoardHeader({ board }: Props) {
             {isOpenEditBoardModal &&
                 <BaseModal
                     variant="edit"
-                    handleEdit={(event) => handleEditEntity(event, board?.id, editBoard, closeEditBoardModal, "board")}
+                    handleEdit={(event) => handleEditEntity(
+                        event,
+                        board?.id,
+                        editBoard,
+                        closeEditBoardModal,
+                        "board"
+                    )}
                     isOpenModal={isOpenEditBoardModal}
                     handleCloseModal={closeEditBoardModal}
                     defaultValue={board?.name} />

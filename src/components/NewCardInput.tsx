@@ -27,16 +27,22 @@ export function NewCardInput({ item }: Props) {
                 <Button onClick={() => {
                     openInputAddCard(item.id)
                 }}
-                    sx={{ height: 'fit-content', margin: '0', padding: 0 }}
+                    sx={{ height: '40px', margin: '0', padding: 0 }}
                 >
                     + Add a card
                 </Button>
             }
             {inputCard === item.id &&
                 <form onSubmit={(event) =>
-                    handleAddEntity(event, addCard, closeInputAddCard, "card-new", { listId: item.id })
+                    handleAddEntity(
+                        event,
+                        addCard,
+                        closeInputAddCard,
+                        "card-new",
+                        { listId: item.id }
+                    )
                 }
-                    style={{ display: 'flex', alignItems: 'center' }}
+                    style={{ height: '40px', display: 'flex', alignItems: 'center' }}
                 >
                     <TextField
                         name="card-new"

@@ -1,10 +1,10 @@
-export const handleEditEntity = <T extends { id?: string, name: string }>(
+export const handleEditEntity = <T extends { id?: string, name: string, relatedId?: string }>(
     event: React.FormEvent<HTMLFormElement>,
-    entityId: string | undefined,
+    entityId: string,
     actionFunction: (data: T) => void,
     closeFunction: () => void,
     inputName: string,
-    extraData?: Partial<T>
+    extraData?: object
 ) => {
     event.preventDefault()
 
@@ -17,12 +17,12 @@ export const handleEditEntity = <T extends { id?: string, name: string }>(
     closeFunction()
 };
 
-export const handleAddEntity = <T extends { id: string; name: string }>(
+export const handleAddEntity = <T extends { id: string; name: string, relatedId?: string }>(
     event: React.FormEvent<HTMLFormElement>,
     actionFunction: (data: T) => void,
     closeFunction: () => void,
     inputName: string,
-    extraData?: Partial<T>
+    extraData?: object
 ) => {
     event.preventDefault();
 

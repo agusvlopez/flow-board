@@ -49,6 +49,7 @@
   /* margin-top: 12px; */
   max-width: 80vw;
   margin: 32px auto;
+  height: 75vh;
 }
 
 .actionable-label--container {
@@ -58,7 +59,9 @@
 
 .actionable-label {
   flex: 1;
+  padding: 8px;
 }
+
 
 .base-card {
   margin: auto;

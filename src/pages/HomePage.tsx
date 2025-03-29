@@ -39,7 +39,11 @@ export function HomePage() {
                         Create a new board
                     </Typography>
                     <form onSubmit={(event) =>
-                        handleAddEntity(event, createBoard, closeBoardModal, "board-new"
+                        handleAddEntity(
+                            event,
+                            createBoard,
+                            closeBoardModal,
+                            "board-new"
                         )}>
                         <TextField name="board-new" id="board-new" label="Name" variant="standard" autoFocus />
                         <Button type="submit">Create</Button>

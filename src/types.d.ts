@@ -8,12 +8,12 @@ export type List = {
     id: string
     name: string
     boardId: string
-    cards?: string[]
+    cards: string[]
 }
 
 export type Card = {
     id: string,
-    name: string,
+    name?: string,
     description?: string
     dueDate?: string
     listId: string
