@@ -11,7 +11,6 @@ interface Props {
     item: ListType | CardType
 }
 
-
 export function CardHeader({ variant, item }: Props) {
 
     const {
@@ -68,38 +67,50 @@ export function CardHeader({ variant, item }: Props) {
         </List>
     )
 
-    if (variant === "card" && "listId" in item) return (
-        <List>
-            <ListItem key={item.id} className="actionable-label--container">
-                <ActionableLabel
-                    editMode={editCardInput === item.id}
-                    handleOnSubmit={(event) => handleEditEntity(
-                        event,
-                        item.id,
-                        editCard,
-                        closeInputEditCard,
-                        "card-edit",
-                        { listId: item?.listId }
-                    )}
-                    defaultValue={item.name ?? ""}
-                    labelName="card-edit"
-                    labelButton="Edit Card"
-                    name={item.name ?? ""}
-                    handleEdit={() => {
-                        openInputEditCard(item.id);
-                    }}
-                />
-                <ActionsMenu
-                    elementId={item.id}
-                    editAction={() => {
-                        openInputEditCard(item.id);
-                    }}
-                    deleteAction={() => {
-                        deleteCard(item.id);
-                    }}
-                />
-            </ListItem>
-        </List>
-    )
+    if (variant === "card" && "listId" in item) {
+        const adaptedEditCard = (data: { id?: string, name: string }) => {
+            if (data.id) {
+                editCard({
+                    id: data.id,
+                    name: data.name,
+                    listId: item?.listId
+                });
+            }
+        }
+
+        return (
+            <List>
+                <ListItem key={item.id} className="actionable-label--container">
+                    <ActionableLabel
+                        editMode={editCardInput === item.id}
+                        handleOnSubmit={(event) => handleEditEntity(
+                            event,
+                            item.id,
+                            adaptedEditCard,
+                            closeInputEditCard,
+                            "card-edit",
+                            { listId: item?.listId }
+                        )}
+                        defaultValue={item.name ?? ""}
+                        labelName="card-edit"
+                        labelButton="Edit Card"
+                        name={item.name ?? ""}
+                        handleEdit={() => {
+                            openInputEditCard(item.id);
+                        }}
+                    />
+                    <ActionsMenu
+                        elementId={item.id}
+                        editAction={() => {
+                            openInputEditCard(item.id);
+                        }}
+                        deleteAction={() => {
+                            deleteCard(item.id);
+                        }}
+                    />
+                </ListItem>
+            </List>
+        )
+    }
 
 }

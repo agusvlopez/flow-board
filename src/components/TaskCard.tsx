@@ -39,7 +39,8 @@ export function TaskCard({ card }: Props) {
                         justifySelf: "flex-end",
                         borderRadius: "4px"
                     }}
-                ><DragIndicatorIcon /></button>
+                ><DragIndicatorIcon />
+                </button>
                 <CardHeader
                     variant="card"
                     item={card}

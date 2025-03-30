@@ -13,8 +13,8 @@ export type List = {
 
 export type Card = {
     id: string,
+    listId?: string,
     name?: string,
     description?: string
     dueDate?: string
-    listId: string
 }

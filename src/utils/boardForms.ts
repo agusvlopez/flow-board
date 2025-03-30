@@ -1,4 +1,4 @@
-export const handleEditEntity = <T extends { id?: string, name: string, relatedId?: string }>(
+export const handleEditEntity = <T extends { id?: string, name: string }>(
     event: React.FormEvent<HTMLFormElement>,
     entityId: string,
     actionFunction: (data: T) => void,
@@ -17,7 +17,7 @@ export const handleEditEntity = <T extends { id?: string, name: string, relatedI
     closeFunction()
 };
 
-export const handleAddEntity = <T extends { id: string; name: string, relatedId?: string }>(
+export const handleAddEntity = <T extends { id: string; name: string }>(
     event: React.FormEvent<HTMLFormElement>,
     actionFunction: (data: T) => void,
     closeFunction: () => void,

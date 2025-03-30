@@ -24,7 +24,8 @@ export function CustomList({ list }: Props) {
                 flexShrink: 0,
                 background: '#1A1A1A',
                 height: 'fit-content',
-            }}>
+            }}
+        >
             <div>
                 <CardHeader
                     variant="list"

@@ -5,6 +5,7 @@ import { BaseCard } from "../components/BaseCard"
 import { Box, Button, Modal, TextField, Typography } from "@mui/material"
 import { handleAddEntity } from "../utils/boardForms"
 import { useBoardActions } from "../hooks/useBoardActions"
+import { Toaster } from "sonner"
 
 const style = {
     position: 'absolute',
@@ -16,7 +17,7 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-};
+}
 
 export function HomePage() {
 
@@ -27,7 +28,7 @@ export function HomePage() {
 
     return (
         <>
-            {/* //TODO: USE BASE MODAL COMPONENT */}
+            <Toaster />
             <Modal
                 open={isOpenBoardModal}
                 onClose={closeBoardModal}

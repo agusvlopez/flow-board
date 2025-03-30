@@ -6,6 +6,7 @@ import { BoardHeader } from "../components/BoardHeader"
 import { CustomList } from "../components/CustomList"
 import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { useBoardCRUD } from "../hooks/useBoardCRUD"
+import { Toaster } from "sonner"
 
 export function BoardPage() {
     const { id } = useParams()
@@ -38,9 +39,8 @@ export function BoardPage() {
 
     return (
         <>
+            <Toaster />
             <BoardHeader board={board} />
-            {/* LISTS */}
-
             <section className="lists-container">
                 <DndContext onDragEnd={handleDragEnd}>
                     {lists.map((list) => (

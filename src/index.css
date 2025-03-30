@@ -48,8 +48,9 @@
   overflow-x: auto;
   /* margin-top: 12px; */
   max-width: 80vw;
-  margin: 32px auto;
-  height: 75vh;
+  margin: 12px auto;
+  min-height: 75vh;
+  padding-bottom: 32px;
 }
 
 .actionable-label--container {

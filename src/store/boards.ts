@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Board, Card, List } from "../types";
 import { persist } from "zustand/middleware";
+import { toast } from "sonner";
 
 interface State {
     boards: Board[]
@@ -31,6 +32,7 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
             const { boards } = get()
             const newBoards = structuredClone(boards)
 
+            toast('Board created')
             set({ boards: [...newBoards, board] })
         },
 
@@ -45,6 +47,7 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
                 name
             }
 
+            toast(`Board ${name} edited`)
             set({ boards: newBoards })
         },
 
@@ -55,6 +58,8 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
             const filteredBoards = newBoards.filter((board) => {
                 return board.id !== id
             })
+
+            toast('Board deleted')
 
             set({ boards: filteredBoards })
         },
@@ -68,6 +73,8 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
             newBoards[boardIndex].lists = [...(newBoards[boardIndex].lists || []), list.id]
 
             const newList = { ...list, cards: list.cards ?? [] }
+
+            toast('List added')
 
             set({ lists: [...newLists, newList], boards: newBoards })
         },
@@ -83,6 +90,7 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
                 name
             }
 
+            toast(`List '${name}' edited`)
             set({ lists: newLists })
         },
 
@@ -93,6 +101,8 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
             const filteredLists = newLists.filter((list) => {
                 return list.id !== id
             })
+
+            toast("List deleted")
 
             set({ lists: filteredLists })
         },
@@ -106,6 +116,8 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
 
             const { cards } = get()
             const newCards = structuredClone(cards)
+
+            toast("Card added")
 
             set({ cards: [...newCards, card], lists: newLists })
         },
@@ -122,6 +134,8 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
                 ...(listId !== undefined && { listId })
             }
 
+            toast(`Card '${name}' edited`)
+
             set({ cards: newCards })
         },
 
@@ -133,6 +147,7 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
                 return card.id !== id
             })
 
+            toast('Card deleted')
             set({ cards: filteredCards })
         }
     }
