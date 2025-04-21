@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 export const handleEditEntity = <T extends { id?: string, name: string }>(
     event: React.FormEvent<HTMLFormElement>,
     entityId: string,
@@ -14,6 +16,9 @@ export const handleEditEntity = <T extends { id?: string, name: string }>(
     if (!inputValue.trim()) return
 
     actionFunction({ id: entityId, name: inputValue, ...extraData } as T)
+
+    toast(`'${inputValue}' edited`)
+
     closeFunction()
 };
 
@@ -32,5 +37,8 @@ export const handleAddEntity = <T extends { id: string; name: string }>(
     if (!inputValue.trim()) return
 
     actionFunction({ id: crypto.randomUUID(), name: inputValue, ...extraData } as T)
+
+    toast(`'${inputValue}' added`)
+
     closeFunction();
 };

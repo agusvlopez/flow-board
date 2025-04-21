@@ -32,7 +32,6 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
             const { boards } = get()
             const newBoards = structuredClone(boards)
 
-            toast('Board created')
             set({ boards: [...newBoards, board] })
         },
 
@@ -47,7 +46,6 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
                 name
             }
 
-            toast(`Board ${name} edited`)
             set({ boards: newBoards })
         },
 
@@ -74,8 +72,6 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
 
             const newList = { ...list, cards: list.cards ?? [] }
 
-            toast('List added')
-
             set({ lists: [...newLists, newList], boards: newBoards })
         },
 
@@ -90,7 +86,6 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
                 name
             }
 
-            toast(`List '${name}' edited`)
             set({ lists: newLists })
         },
 
@@ -117,8 +112,6 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
             const { cards } = get()
             const newCards = structuredClone(cards)
 
-            toast("Card added")
-
             set({ cards: [...newCards, card], lists: newLists })
         },
 
@@ -133,8 +126,6 @@ export const useBoardsStore = create<State>()(persist((set, get) => {
                 ...(name !== undefined && { name }),
                 ...(listId !== undefined && { listId })
             }
-
-            toast(`Card '${name}' edited`)
 
             set({ cards: newCards })
         },

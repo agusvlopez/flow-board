@@ -6,7 +6,7 @@ import { BoardHeader } from "../components/BoardHeader"
 import { CustomList } from "../components/CustomList"
 import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { useBoardCRUD } from "../hooks/useBoardCRUD"
-import { Toaster } from "sonner"
+import { toast, Toaster } from "sonner"
 
 export function BoardPage() {
     const { id } = useParams()
@@ -24,12 +24,14 @@ export function BoardPage() {
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event
+        console.log("active", active);
 
         if (!over) return
 
         const cardId = active.id as CardType["id"]
         const newStatus = over.id as CardType["listId"]
 
+        toast(`Card moved`)
         editCard({ id: cardId, listId: newStatus })
     }
 
